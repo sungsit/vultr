@@ -1,3 +1,1 @@
-# Vultr installation scripts
-
-- Useful client tool https://jamesclonk.github.io/vultr/
+# My Vultr installation scripts
