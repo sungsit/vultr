@@ -10,7 +10,6 @@ Server = http://srv2.ftp.ne.jp/Linux/packages/archlinux/\$repo/os/\$arch
 Server = http://ftp.nara.wide.ad.jp/pub/Linux/archlinux/\$repo/os/\$arch
 Server = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch
 Server = https://mirrors.kernel.org/archlinux/\$repo/os/\$arch
-
 EOF
 
 # sync
@@ -45,6 +44,7 @@ arch-chroot /mnt /bin/sh -c 'pacman -Syy'
 arch-chroot /mnt /bin/sh -c 'pacman --noconfirm --needed -S grub openssh'
 
 # grub
+sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/' /mnt/etc/default/grub
 arch-chroot /mnt /bin/sh -c 'grub-install /dev/vda'
 arch-chroot /mnt /bin/sh -c 'grub-mkconfig -o /boot/grub/grub.cfg'
 
@@ -53,6 +53,18 @@ arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rs
 arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa"
 arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa"
 arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519"
+
+# temporal allow root login with password vis ssh
+mv /mnt/ssh/sshd_config /mnt/ssh/sshd_config.orig
+tee /mnt/ssh/sshd_config <<EOF
+PermitRootLogin yes
+PasswordAuthentication yes
+PermitEmptyPasswords no
+ChallengeResponseAuthentication yes
+UsePAM yes
+PrintMotd no
+AllowUsers root
+EOF
 
 # enable required services
 arch-chroot /mnt /bin/sh -c 'systemctl enable sshd.service'
@@ -65,4 +77,5 @@ arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/EMPTY bs=1M'
 arch-chroot /mnt /bin/sh -c 'rm -f /EMPTY'
 
 # root passwd
-echo 'Do not forget to set your root password!'
+tput smso; tput bold; echo " Do not forget to set your root password! "; tput rmso; tput sgr0; echo
+arch-chroot /mnt /bin/bash
