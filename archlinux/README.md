@@ -22,7 +22,7 @@
 - Open Vultr console (**View Console** menu). After `archiso` successfully boot, run installation script  **inside the console**
 
   ~~~
-  `bash <(wget -qO- https://github.com/sungsit/vultr/raw/master/archlinux/install-jp.sh)
+  bash <(wget -qO- https://github.com/sungsit/vultr/raw/master/archlinux/install-jp.sh)
   ~~~
 
 - And don't forget to set new root password! (`passwd`)
