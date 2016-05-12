@@ -19,5 +19,10 @@
 
   Note: OS ID **must be** `--os=159` (Custom ISO). **Or** login to https://my.vultr.com/ to create new instance. In **Server Type** section, choose **Custon ISO** then input **iPXE Chain URL** (`http://releng.archlinux.org/pxeboot/arch.ipxe` should be fine for all regions).
 
-- Open Vultr console (**View Console** menu). After `archiso` successfully boot, run installation script `bash <(wget -qO- https://github.com/sungsit/vultr/raw/master/archlinux/install-jp.sh)` **inside the console**.
+- Open Vultr console (**View Console** menu). After `archiso` successfully boot, run installation script  **inside the console**
+
+  ~~~
+  `bash <(wget -qO- https://github.com/sungsit/vultr/raw/master/archlinux/install-jp.sh)
+  ~~~
+
 - And don't forget to set new root password! (`passwd`)
