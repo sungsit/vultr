@@ -10,6 +10,16 @@ Server = http://srv2.ftp.ne.jp/Linux/packages/archlinux/\$repo/os/\$arch
 Server = http://ftp.nara.wide.ad.jp/pub/Linux/archlinux/\$repo/os/\$arch
 Server = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch
 Server = https://mirrors.kernel.org/archlinux/\$repo/os/\$arch
+EOF
+
+# yaourt
+cp /etc/pacman.conf /etc/pacman.conf.orig
+tee -a /etc/pacman.conf <<EOF
+
+# yaourt
+[archlinuxfr]
+SigLevel = Optional
+Server = http://repo.archlinux.fr/\$arch
 
 EOF
 
@@ -28,7 +38,7 @@ swapon /dev/vda1
 
 # pacstrap
 mount /dev/vda2 /mnt
-pacstrap /mnt base
+pacstrap /mnt base base-devel
 
 genfstab -p /mnt > /mnt/etc/fstab
 cp /etc/pacman.conf /mnt/etc/.
@@ -42,7 +52,7 @@ arch-chroot /mnt /bin/sh -c 'locale-gen'
 
 # required packages
 arch-chroot /mnt /bin/sh -c 'pacman -Syy'
-arch-chroot /mnt /bin/sh -c 'pacman --noconfirm --needed -S grub openssh'
+arch-chroot /mnt /bin/sh -c 'pacman --noconfirm --needed -S grub openssh git sudo nano vim zip unzip wget curl rsync yaourt'
 
 # grub
 arch-chroot /mnt /bin/sh -c 'grub-install /dev/vda'
