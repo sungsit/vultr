@@ -1,5 +1,8 @@
 #!ipxe
 
+# This is a customized text-only mode with pre-defined mirror (Japan).
+# For full graphical mode, use http://releng.archlinux.org/pxeboot/arch.ipxe instead.
+
 dhcp net0
 set 209:string https://raw.githubusercontent.com/sungsit/vultr/master/archlinux/arch64.jp.cfg
 set 210:string http://releng.archlinux.org/pxeboot/boot

@@ -54,9 +54,10 @@ arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t ds
 arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa"
 arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519"
 
-# temporal allow root login with password vis ssh
-mv /mnt/ssh/sshd_config /mnt/ssh/sshd_config.orig
-tee /mnt/ssh/sshd_config <<EOF
+# temporal allow root login with password via ssh
+# don't forget to make it more secure!
+mv /mnt/etc/ssh/sshd_config /mnt/etc/ssh/sshd_config.orig
+tee /mnt/etc/ssh/sshd_config <<EOF
 PermitRootLogin yes
 PasswordAuthentication yes
 PermitEmptyPasswords no
