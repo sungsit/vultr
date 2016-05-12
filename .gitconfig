@@ -1,0 +1,15 @@
+[user]
+  name = Sungsit Sawaiwan
+  email = sungsit@users.noreply.github.com
+[core]
+  editor = nano
+  autocrlf = input
+  whitespace = trailing-space,space-before-tab,indent-with-non-tab,cr-at-eol
+[color]
+  ui = true
+[push]
+  default = simple
+[filter "lfs"]
+  required = true
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
