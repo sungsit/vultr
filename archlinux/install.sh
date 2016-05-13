@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
 
-# change mirrors
-mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
-tee /etc/pacman.d/mirrorlist <<EOF
-Server = http://ftp.tsukuba.wide.ad.jp/Linux/archlinux/\$repo/os/\$arch
-Server = http://ftp.jaist.ac.jp/pub/Linux/ArchLinux/\$repo/os/\$arch
-Server = http://ftp.kddilabs.jp/Linux/packages/archlinux/\$repo/os/\$arch
-Server = http://srv2.ftp.ne.jp/Linux/packages/archlinux/\$repo/os/\$arch
-Server = http://ftp.nara.wide.ad.jp/pub/Linux/archlinux/\$repo/os/\$arch
-Server = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch
-Server = https://mirrors.kernel.org/archlinux/\$repo/os/\$arch
-EOF
-
 # sync
 pacman -Syy
 

@@ -3,11 +3,11 @@
 # change mirrors
 mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.orig
 tee /etc/pacman.d/mirrorlist <<EOF
-Server = http://ftp.tsukuba.wide.ad.jp/Linux/archlinux/\$repo/os/\$arch
-Server = http://ftp.jaist.ac.jp/pub/Linux/ArchLinux/\$repo/os/\$arch
-Server = http://ftp.kddilabs.jp/Linux/packages/archlinux/\$repo/os/\$arch
-Server = http://srv2.ftp.ne.jp/Linux/packages/archlinux/\$repo/os/\$arch
-Server = http://ftp.nara.wide.ad.jp/pub/Linux/archlinux/\$repo/os/\$arch
+Server = http://mirror.psu.ac.th/archlinux/\$repo/os/\$arch
+Server = http://mirror1.ku.ac.th/archlinux/\$repo/os/\$arch
+Server = http://mirror.adminbannok.com/archlinux/\$repo/os/\$arch
+Server = http://download.nus.edu.sg/mirror/arch/\$repo/os/\$arch
+Server = http://mirror.nus.edu.sg/archlinux/\$repo/os/\$arch
 Server = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch
 Server = https://mirrors.kernel.org/archlinux/\$repo/os/\$arch
 EOF
