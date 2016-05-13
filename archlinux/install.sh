@@ -62,9 +62,10 @@ arch-chroot /mnt /bin/sh -c 'systemctl enable dhcpcd.service'
 # cleaup
 arch-chroot /mnt /bin/bash -c 'rm -rf /var/cache/pacman/pkg/*'
 arch-chroot /mnt /bin/bash -c 'rm -rf /var/lib/pacman/sync/*'
-arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/EMPTY bs=1M'
-arch-chroot /mnt /bin/sh -c 'rm -f /EMPTY'
+arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/tmp/EMPTY bs=1M'
+arch-chroot /mnt /bin/sh -c 'rm -f /tmp/EMPTY'
 
 # root passwd
-tput smso; tput bold; echo " Do not forget to set your root password! "; tput rmso; tput sgr0; echo
-arch-chroot /mnt /bin/sh -c 'passwd root'
+arch-chroot /mnt /bin/sh -c 'echo root:CHANGEME | chpasswd'
+tput smso; tput bold; echo " Temporal root password is CHANGEME "; tput rmso; tput sgr0; echo
+tput smso; tput bold; echo " Do not forget to change that after first login! "; tput rmso; tput sgr0; echo
