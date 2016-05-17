@@ -5,8 +5,8 @@ pacman -Syy
 
 # partitioning
 parted -s /dev/vda mklabel msdos
-parted -s /dev/vda mkpart primary linux-swap 1MiB 2049MiB
-parted -s /dev/vda mkpart primary ext4 2049MiB 100%
+parted -s /dev/vda mkpart primary linux-swap 1MiB 769MiB
+parted -s /dev/vda mkpart primary ext4 769MiB 100%
 parted -s /dev/vda set 2 boot on
 parted -s /dev/vda print
 mkfs.ext4 /dev/vda2
@@ -62,8 +62,8 @@ arch-chroot /mnt /bin/sh -c 'systemctl enable dhcpcd.service'
 # cleaup
 arch-chroot /mnt /bin/bash -c 'rm -rf /var/cache/pacman/pkg/*'
 arch-chroot /mnt /bin/bash -c 'rm -rf /var/lib/pacman/sync/*'
-arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/tmp/EMPTY bs=1M'
-arch-chroot /mnt /bin/sh -c 'rm -f /tmp/EMPTY'
+arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/EMPTY bs=1M'
+arch-chroot /mnt /bin/sh -c 'rm -f /EMPTY'
 
 # root passwd
 arch-chroot /mnt /bin/sh -c 'echo root:CHANGEME | chpasswd'
