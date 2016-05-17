@@ -55,6 +55,7 @@ arch-chroot /mnt /bin/sh -c 'pacman -Syy'
 arch-chroot /mnt /bin/sh -c 'pacman --noconfirm --needed -S grub openssh git sudo nano vim zip unzip wget curl rsync yaourt'
 
 # grub
+sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/' /mnt/etc/default/grub
 arch-chroot /mnt /bin/sh -c 'grub-install /dev/vda'
 arch-chroot /mnt /bin/sh -c 'grub-mkconfig -o /boot/grub/grub.cfg'
 
@@ -64,6 +65,19 @@ arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t ds
 arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa"
 arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519"
 
+# temporal allow root login with password via ssh
+# don't forget to make it more secure!
+mv /mnt/etc/ssh/sshd_config /mnt/etc/ssh/sshd_config.orig
+tee /mnt/etc/ssh/sshd_config <<EOF
+PermitRootLogin yes
+PasswordAuthentication yes
+PermitEmptyPasswords no
+ChallengeResponseAuthentication yes
+UsePAM yes
+PrintMotd no
+AllowUsers root
+EOF
+
 # enable required services
 arch-chroot /mnt /bin/sh -c 'systemctl enable sshd.service'
 arch-chroot /mnt /bin/sh -c 'systemctl enable dhcpcd.service'
@@ -71,8 +85,10 @@ arch-chroot /mnt /bin/sh -c 'systemctl enable dhcpcd.service'
 # cleaup
 arch-chroot /mnt /bin/bash -c 'rm -rf /var/cache/pacman/pkg/*'
 arch-chroot /mnt /bin/bash -c 'rm -rf /var/lib/pacman/sync/*'
-arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/EMPTY bs=1M'
-arch-chroot /mnt /bin/sh -c 'rm -f /EMPTY'
+arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/tmp/EMPTY bs=1M'
+arch-chroot /mnt /bin/sh -c 'rm -f /tmp/EMPTY'
 
 # root passwd
-echo 'Do not forget to set your root password!'
+arch-chroot /mnt /bin/sh -c 'echo root:CHANGEME | chpasswd'
+tput smso; tput bold; echo " Temporal root password is CHANGEME "; tput rmso; tput sgr0; echo
+tput smso; tput bold; echo " Do not forget to change that after first login! "; tput rmso; tput sgr0; echo

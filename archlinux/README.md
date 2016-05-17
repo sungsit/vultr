@@ -1,6 +1,5 @@
 # Vultr: Archlinux Installation
 
-- There is useful client tool, see https://jamesclonk.github.io/vultr/
 - Create new instance with ipxe boot
 
   ~~~
