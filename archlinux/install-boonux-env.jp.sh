@@ -105,12 +105,12 @@ tput smso; tput bold; echo " Do not forget to change that after first login! "; 
 # user passwd (we cannot parse var to chroot env)
 arch-chroot /mnt /bin/sh -c 'groupadd -g 1000 boonux'
 arch-chroot /mnt /bin/sh -c 'useradd -m -g 1000 -u 1000 -G wheel boonux'
-arch-chroot /mnt /bin/sh -c 'echo "boonux ALL=(ALL:ALL) NOPASSWS:ALL" > /etc/sudoers.d/boonux'
+arch-chroot /mnt /bin/sh -c 'echo "boonux ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/boonux'
 arch-chroot /mnt /bin/sh -c 'echo boonux:boonux | chpasswd'
-tput smso; tput bold; echo " Temporal boonux password is booux "; tput rmso; tput sgr0; echo
+tput smso; tput bold; echo " Temporal boonux password is boonux "; tput rmso; tput sgr0; echo
 tput smso; tput bold; echo " Do not forget to change that after first login! "; tput rmso; tput sgr0; echo
 
-arch-chroot /mnt /bin/sh -c 'mkdir /home/repos'
+arch-chroot /mnt /bin/sh -c 'mkdir -p /home/repos'
 arch-chroot /mnt /bin/sh -c 'chown -R boonux:boonux /home/repos'
 arch-chroot /mnt /bin/sh -c 'sudo -u boonux git clone https://github.com/sungsit/boonux.git /home/repos/boonux'
 arch-chroot /mnt /bin/sh -c 'sudo -u boonux cp -rf /home/repos/boonux/airootfs/etc/skel/.bashrc /home/boonux/.'
