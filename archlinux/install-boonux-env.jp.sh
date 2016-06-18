@@ -46,7 +46,7 @@ swapon /dev/vda1
 
 # pacstrap
 mount /dev/vda2 /mnt
-pacstrap /mnt base
+LANG=C pacstrap /mnt base
 
 genfstab -p /mnt > /mnt/etc/fstab
 cp /etc/pacman.conf /mnt/etc/.
@@ -59,7 +59,7 @@ echo ${user} > /mnt/etc/hostname
 arch-chroot /mnt /bin/sh -c 'locale-gen'
 
 # required packages
-wget -cO /mnt/packages.txt https://raw.githubusercontent.com/sungsit/boonux/master/packages.txt
+wget -cO /mnt/packages.txt https://raw.githubusercontent.com/sungsit/boonux/master/packages-build-env.txt
 arch-chroot /mnt /bin/sh -c 'pacman -Syy'
 arch-chroot /mnt /bin/sh -c 'pacman --noconfirm --needed -S $(grep -h -v ^# /packages.txt)'
 
@@ -78,7 +78,7 @@ arch-chroot /mnt /bin/sh -c "ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -
 # don't forget to make it more secure!
 mv /mnt/etc/ssh/sshd_config /mnt/etc/ssh/sshd_config.orig
 tee /mnt/etc/ssh/sshd_config <<EOF
-PermitRootLogin yes
+PermitRootLogin no
 PasswordAuthentication yes
 PermitEmptyPasswords no
 ChallengeResponseAuthentication yes
@@ -92,24 +92,26 @@ arch-chroot /mnt /bin/sh -c 'systemctl enable sshd.service'
 arch-chroot /mnt /bin/sh -c 'systemctl enable dhcpcd.service'
 
 # cleaup
-arch-chroot /mnt /bin/bash -c 'rm -rf /var/cache/pacman/pkg/*'
-arch-chroot /mnt /bin/bash -c 'rm -rf /var/lib/pacman/sync/*'
-arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/tmp/EMPTY bs=1M'
-arch-chroot /mnt /bin/sh -c 'rm -f /tmp/EMPTY'
+#arch-chroot /mnt /bin/bash -c 'rm -rf /var/cache/pacman/pkg/*'
+#arch-chroot /mnt /bin/bash -c 'rm -rf /var/lib/pacman/sync/*'
+#arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/tmp/EMPTY bs=1M'
+#arch-chroot /mnt /bin/sh -c 'rm -f /tmp/EMPTY'
 
 # root passwd
 arch-chroot /mnt /bin/sh -c 'echo root:CHANGEME | chpasswd'
 tput smso; tput bold; echo " Temporal root password is CHANGEME "; tput rmso; tput sgr0; echo
 tput smso; tput bold; echo " Do not forget to change that after first login! "; tput rmso; tput sgr0; echo
 
-# root passwd
-arch-chroot /mnt /bin/sh -c 'useradd -m -G wheel ${user}'
-arch-chroot /mnt /bin/sh -c 'echo ${user} ALL=(ALL:ALL) NOPASSWS:ALL > /etc/sudoers.d/${user}'
-arch-chroot /mnt /bin/sh -c 'echo ${user}:${user} | chpasswd'
-tput smso; tput bold; echo " Temporal ${user} password is ${user} "; tput rmso; tput sgr0; echo
+# user passwd (we cannot parse var to chroot env)
+arch-chroot /mnt /bin/sh -c 'groupadd -g 1000 boonux'
+arch-chroot /mnt /bin/sh -c 'useradd -m -g 1000 -u 1000 -G wheel boonux'
+arch-chroot /mnt /bin/sh -c 'echo boonux ALL=(ALL:ALL) NOPASSWS:ALL > /etc/sudoers.d/boonux'
+arch-chroot /mnt /bin/sh -c 'echo boonux:boonux | chpasswd'
+tput smso; tput bold; echo " Temporal boonux password is booux "; tput rmso; tput sgr0; echo
 tput smso; tput bold; echo " Do not forget to change that after first login! "; tput rmso; tput sgr0; echo
 
 arch-chroot /mnt /bin/sh -c 'mkdir /home/repos'
-arch-chroot /mnt /bin/sh -c 'chown -R ${user}:${user} /home/repos'
-arch-chroot /mnt /bin/sh -c 'sudo -u ${user} git clone https://github.com/sungsit/boonux.git /home/repos/boonux'
+arch-chroot /mnt /bin/sh -c 'chown -R boonux:boonux /home/repos'
+arch-chroot /mnt /bin/sh -c 'sudo -u boonux git clone https://github.com/sungsit/boonux.git /home/repos/boonux'
+arch-chroot /mnt /bin/sh -c 'sudo -u boonux cp -rf /home/repos/boonux/airootfs/etc/skel/.bashrc /home/boonux/.'
 
