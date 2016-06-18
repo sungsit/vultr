@@ -105,7 +105,7 @@ tput smso; tput bold; echo " Do not forget to change that after first login! "; 
 # user passwd (we cannot parse var to chroot env)
 arch-chroot /mnt /bin/sh -c 'groupadd -g 1000 boonux'
 arch-chroot /mnt /bin/sh -c 'useradd -m -g 1000 -u 1000 -G wheel boonux'
-arch-chroot /mnt /bin/sh -c 'echo boonux ALL=(ALL:ALL) NOPASSWS:ALL > /etc/sudoers.d/boonux'
+arch-chroot /mnt /bin/sh -c 'echo "boonux ALL=(ALL:ALL) NOPASSWS:ALL" > /etc/sudoers.d/boonux'
 arch-chroot /mnt /bin/sh -c 'echo boonux:boonux | chpasswd'
 tput smso; tput bold; echo " Temporal boonux password is booux "; tput rmso; tput sgr0; echo
 tput smso; tput bold; echo " Do not forget to change that after first login! "; tput rmso; tput sgr0; echo
