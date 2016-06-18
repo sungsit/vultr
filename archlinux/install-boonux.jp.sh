@@ -26,6 +26,8 @@ mv /etc/pacman.conf /etc/pacman.conf.orig
 wget -cO /etc/pacman.conf https://raw.githubusercontent.com/sungsit/boonux/master/airootfs/etc/pacman.conf
 
 # add infinality-bundle repos key
+mkdir -p /root/.gnupg
+touch /root/.gnupg/S.dirmngr
 pacman-key -r 962DDE58
 pacman-key --lsign-key 962DDE58
 
@@ -57,9 +59,9 @@ echo ${user} > /mnt/etc/hostname
 arch-chroot /mnt /bin/sh -c 'locale-gen'
 
 # required packages
-wget -cO /tmp/packages.txt https://raw.githubusercontent.com/sungsit/boonux/master/packages.txt
+wget -cO /mnt/packages.txt https://raw.githubusercontent.com/sungsit/boonux/master/packages.txt
 arch-chroot /mnt /bin/sh -c 'pacman -Syy'
-arch-chroot /mnt /bin/sh -c 'pacman --noconfirm --needed -S $(grep -h -v ^# /tmp/packages.txt)'
+arch-chroot /mnt /bin/sh -c 'pacman --noconfirm --needed -S $(grep -h -v ^# /packages.txt)'
 
 # grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/' /mnt/etc/default/grub
