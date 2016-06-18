@@ -92,8 +92,8 @@ arch-chroot /mnt /bin/sh -c 'systemctl enable sshd.service'
 arch-chroot /mnt /bin/sh -c 'systemctl enable dhcpcd.service'
 
 # cleaup
-#arch-chroot /mnt /bin/bash -c 'rm -rf /var/cache/pacman/pkg/*'
-#arch-chroot /mnt /bin/bash -c 'rm -rf /var/lib/pacman/sync/*'
+arch-chroot /mnt /bin/bash -c 'rm -rf /var/cache/pacman/pkg/*'
+arch-chroot /mnt /bin/bash -c 'rm -rf /var/lib/pacman/sync/*'
 #arch-chroot /mnt /bin/sh -c 'dd if=/dev/zero of=/tmp/EMPTY bs=1M'
 #arch-chroot /mnt /bin/sh -c 'rm -f /tmp/EMPTY'
 
